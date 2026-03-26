@@ -1,5 +1,5 @@
 import Footer from "@/app/_components/footer";
-import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
+import { CMS_NAME, HOME_HERO_IMAGE_PATH, HOME_OG_IMAGE_URL } from "@/lib/constants";
 import { withBasePath } from "@/lib/base-path";
 import { NoFOUCScript, THEME_STORAGE_KEY } from "@/lib/theme-init";
 import type { Metadata } from "next";
@@ -30,28 +30,15 @@ export default function RootLayout({
       <head>
         <link
           rel="apple-touch-icon"
-          sizes="180x180"
-          href={withBasePath("/favicon/apple-touch-icon.png")}
+          href={withBasePath(HOME_HERO_IMAGE_PATH)}
         />
         <link
           rel="icon"
           type="image/png"
-          sizes="32x32"
-          href={withBasePath("/favicon/favicon-32x32.png")}
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href={withBasePath("/favicon/favicon-16x16.png")}
+          href={withBasePath(HOME_HERO_IMAGE_PATH)}
         />
         <link rel="manifest" href={withBasePath("/favicon/site.webmanifest")} />
-        <link
-          rel="mask-icon"
-          href={withBasePath("/favicon/safari-pinned-tab.svg")}
-          color="#000000"
-        />
-        <link rel="shortcut icon" href={withBasePath("/favicon/favicon.ico")} />
+        <link rel="shortcut icon" href={withBasePath(HOME_HERO_IMAGE_PATH)} />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta
           name="msapplication-config"
