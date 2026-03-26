@@ -1,6 +1,7 @@
 import Container from "@/app/_components/container";
 import { ThemeSwitcher } from "@/app/_components/theme-switcher";
 import { getAllCategories } from "@/lib/api";
+import { withBasePath } from "@/lib/base-path";
 import Link from "next/link";
 
 export default async function Header() {
@@ -15,7 +16,7 @@ export default async function Header() {
             className="flex shrink-0 justify-center title-font font-medium text-gray-900 dark:text-slate-100 md:justify-start"
           >
             <img
-              src="/assets/blog/logs.png"
+              src={withBasePath("/assets/blog/logs.png")}
               alt="masaLogs"
               className="h-10 w-auto max-w-[200px] object-contain object-left md:h-11"
               width={200}

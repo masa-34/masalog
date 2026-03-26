@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { withBasePath } from "@/lib/base-path";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -13,7 +14,7 @@ type Props = {
 const CoverImage = ({ title, src, slug, priority }: Props) => {
   const image = (
     <Image
-      src={src}
+      src={withBasePath(src)}
       alt={`Cover Image for ${title}`}
       priority={priority}
       className={cn("shadow-sm w-full", {

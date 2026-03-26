@@ -1,4 +1,5 @@
 import { LEGAL_SITE_NAME } from "@/lib/legal-site";
+import { withBasePath } from "@/lib/base-path";
 import Link from "next/link";
 
 export function Footer() {
@@ -11,7 +12,7 @@ export function Footer() {
             className="inline-flex title-font font-medium items-center text-gray-900 dark:text-slate-100"
           >
             <img
-              src="/assets/blog/logs.png"
+              src={withBasePath("/assets/blog/logs.png")}
               alt="masaLogs"
               className="h-10 w-auto max-w-[200px] object-contain object-left"
               width={200}

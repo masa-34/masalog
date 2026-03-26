@@ -1,6 +1,7 @@
 import { PostDates } from "@/app/_components/post-dates";
 import { PostTags } from "@/app/_components/post-tags";
 import type { Post } from "@/interfaces/post";
+import { withBasePath } from "@/lib/base-path";
 import cn from "classnames";
 import Image from "next/image";
 import Link from "next/link";
@@ -63,7 +64,7 @@ export function BlogCardsSection({
                 <Link href={`/posts/${post.slug}`} className="block">
                   <Image
                     className="lg:h-48 md:h-36 w-full object-cover object-center"
-                    src={post.coverImage}
+                    src={withBasePath(post.coverImage)}
                     alt=""
                     width={720}
                     height={400}

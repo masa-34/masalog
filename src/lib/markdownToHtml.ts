@@ -1,3 +1,4 @@
+import { prefixRootRelativeUrlsInHtml } from "@/lib/base-path";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
@@ -13,5 +14,5 @@ export default async function markdownToHtml(markdown: string): Promise<string> 
     .use(rehypeSlug)
     .use(rehypeStringify)
     .process(markdown);
-  return String(result);
+  return prefixRootRelativeUrlsInHtml(String(result));
 }
