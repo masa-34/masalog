@@ -6,13 +6,16 @@ type Props = {
   title: string;
   src: string;
   slug?: string;
+  /** ファーストビュー用（LCP 画像など） */
+  priority?: boolean;
 };
 
-const CoverImage = ({ title, src, slug }: Props) => {
+const CoverImage = ({ title, src, slug, priority }: Props) => {
   const image = (
     <Image
       src={src}
       alt={`Cover Image for ${title}`}
+      priority={priority}
       className={cn("shadow-sm w-full", {
         "hover:shadow-lg transition-shadow duration-200": slug,
       })}

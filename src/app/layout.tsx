@@ -1,9 +1,11 @@
 import Footer from "@/app/_components/footer";
 import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
+import { NoFOUCScript, THEME_STORAGE_KEY } from "@/lib/theme-init";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import cn from "classnames";
-import { ThemeSwitcher } from "./_components/theme-switcher";
+import Script from "next/script";
+import Header from "./_components/header";
 
 import "./globals.css";
 
@@ -23,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ja" suppressHydrationWarning>
       <head>
         <link
           rel="apple-touch-icon"
@@ -58,10 +60,20 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </head>
       <body
-        className={cn(inter.className, "dark:bg-slate-900 dark:text-slate-400")}
+        className={cn(
+          inter.className,
+          "flex min-h-screen flex-col dark:bg-slate-900 dark:text-slate-400",
+        )}
       >
-        <ThemeSwitcher />
-        <div className="min-h-screen">{children}</div>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(${NoFOUCScript.toString()})(${JSON.stringify(THEME_STORAGE_KEY)})`,
+          }}
+        />
+        <Header />
+        <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         <Footer />
       </body>
     </html>

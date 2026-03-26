@@ -5,14 +5,50 @@
 .markdown p,
 .markdown ul,
 .markdown ol,
-.markdown blockquote {
+.markdown blockquote,
+.markdown pre {
   @apply my-6;
 }
 
+/* Tailwind Preflight が list-style を消すため、番号・箇条を復元 */
+.markdown ol {
+  @apply list-decimal list-outside pl-8;
+}
+
+.markdown ul {
+  @apply list-disc list-outside pl-8;
+}
+
+.markdown li {
+  @apply my-1.5 pl-1;
+}
+
+.markdown li > p {
+  @apply my-2 first:mt-0 last:mb-0;
+}
+
+.markdown a {
+  @apply text-indigo-600 underline decoration-indigo-600/50 underline-offset-2 transition-colors hover:text-indigo-800 hover:decoration-indigo-800 dark:text-indigo-400 dark:decoration-indigo-400/50 dark:hover:text-indigo-300 dark:hover:decoration-indigo-300;
+}
+
+.markdown pre {
+  @apply overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 text-base dark:border-slate-600 dark:bg-slate-900;
+}
+
+.markdown pre code {
+  @apply text-sm leading-relaxed text-gray-800 dark:text-slate-200;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.markdown :not(pre) > code {
+  @apply rounded bg-gray-100 px-1.5 py-0.5 text-[0.9em] text-gray-800 dark:bg-slate-800 dark:text-slate-200;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 .markdown h2 {
-  @apply text-3xl mt-12 mb-4 leading-snug;
+  @apply text-3xl mt-12 mb-4 leading-snug scroll-mt-28;
 }
 
 .markdown h3 {
-  @apply text-2xl mt-8 mb-4 leading-snug;
+  @apply text-2xl mt-8 mb-4 leading-snug scroll-mt-28;
 }

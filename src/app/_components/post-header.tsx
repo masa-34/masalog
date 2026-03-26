@@ -1,33 +1,34 @@
-import Avatar from "./avatar";
-import CoverImage from "./cover-image";
-import DateFormatter from "./date-formatter";
+import { PostDates } from "@/app/_components/post-dates";
+import { PostTags } from "@/app/_components/post-tags";
 import { PostTitle } from "@/app/_components/post-title";
-import { type Author } from "@/interfaces/author";
+import CoverImage from "./cover-image";
 
 type Props = {
   title: string;
   coverImage: string;
   date: string;
-  author: Author;
+  updatedAt: string;
+  tags?: string[];
 };
 
-export function PostHeader({ title, coverImage, date, author }: Props) {
+export function PostHeader({
+  title,
+  coverImage,
+  date,
+  updatedAt,
+  tags = [],
+}: Props) {
   return (
     <>
       <PostTitle>{title}</PostTitle>
-      <div className="hidden md:block md:mb-12">
-        <Avatar name={author.name} picture={author.picture} />
-      </div>
       <div className="mb-8 md:mb-16 sm:mx-0">
         <CoverImage title={title} src={coverImage} />
       </div>
-      <div className="max-w-2xl mx-auto">
-        <div className="block md:hidden mb-6">
-          <Avatar name={author.name} picture={author.picture} />
+      <div className="mx-auto mb-6 max-w-2xl">
+        <div className="mb-4 text-lg">
+          <PostDates date={date} updatedAt={updatedAt} />
         </div>
-        <div className="mb-6 text-lg">
-          <DateFormatter dateString={date} />
-        </div>
+        <PostTags tags={tags} />
       </div>
     </>
   );

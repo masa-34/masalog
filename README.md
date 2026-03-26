@@ -1,72 +1,103 @@
-# A statically generated blog example using Next.js, Markdown, and TypeScript
+# masaLogs
 
-This is the existing [blog-starter](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) plus TypeScript.
+Next.js（App Router）と Markdown（`_posts`）で静的生成するブログです。
 
-This example showcases Next.js's [Static Generation](https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates) feature using Markdown files as the data source.
-
-The blog posts are stored in `/_posts` as Markdown files with front matter support. Adding a new Markdown file in there will create a new blog post.
-
-To create the blog posts we use [`remark`](https://github.com/remarkjs/remark) and [`remark-html`](https://github.com/remarkjs/remark-html) to convert the Markdown files into an HTML string, and then send it down as a prop to the page. The metadata of every post is handled by [`gray-matter`](https://github.com/jonschlinkert/gray-matter) and also sent in props to the page.
-
-## Demo
-
-[https://next-blog-starter.vercel.app/](https://next-blog-starter.vercel.app/)
-
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/blog-starter&project-name=blog-starter&repository-name=blog-starter)
-
-### Related examples
-
-- [AgilityCMS](/examples/cms-agilitycms)
-- [Builder.io](/examples/cms-builder-io)
-- [ButterCMS](/examples/cms-buttercms)
-- [Contentful](/examples/cms-contentful)
-- [Cosmic](/examples/cms-cosmic)
-- [DatoCMS](/examples/cms-datocms)
-- [DotCMS](/examples/cms-dotcms)
-- [Drupal](/examples/cms-drupal)
-- [Enterspeed](/examples/cms-enterspeed)
-- [Ghost](/examples/cms-ghost)
-- [GraphCMS](/examples/cms-graphcms)
-- [Kontent.ai](/examples/cms-kontent-ai)
-- [MakeSwift](/examples/cms-makeswift)
-- [Payload](/examples/cms-payload)
-- [Plasmic](/examples/cms-plasmic)
-- [Prepr](/examples/cms-prepr)
-- [Prismic](/examples/cms-prismic)
-- [Sanity](/examples/cms-sanity)
-- [Sitecore XM Cloud](/examples/cms-sitecore-xmcloud)
-- [Sitefinity](/examples/cms-sitefinity)
-- [Storyblok](/examples/cms-storyblok)
-- [TakeShape](/examples/cms-takeshape)
-- [Tina](/examples/cms-tina)
-- [Umbraco](/examples/cms-umbraco)
-- [Umbraco heartcore](/examples/cms-umbraco-heartcore)
-- [Webiny](/examples/cms-webiny)
-- [WordPress](/examples/cms-wordpress)
-- [Blog Starter](/examples/blog-starter)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## ローカルでの動かし方
 
 ```bash
-npx create-next-app --example blog-starter blog-starter-app
+npm install
+npm run dev
 ```
+
+ブラウザで [http://localhost:3000](http://localhost:3000) を開きます。
+
+本番相当のビルド確認:
 
 ```bash
-yarn create next-app --example blog-starter blog-starter-app
+npm run build
+npm start
 ```
 
-```bash
-pnpm create next-app --example blog-starter blog-starter-app
-```
+## ブログの運用
 
-Your blog should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
+### 新しい記事を公開する
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+1. **`_posts` のカテゴリフォルダの中に** `スラッグ名.md` を追加します（例: `_posts/開発/my-first-post.md`）。
+   - 利用中のフォルダ例: **`開発`** / **`その他`** / **`趣味`**。フロントマターの `category` と揃えると分かりやすいです。
+   - **`未分類`** の記事は `_posts/未分類/` に置きます（空フォルダは `.gitkeep` のみでも問題ありません）。
+2. ファイル名（拡張子なし）が URL になります: `/posts/my-first-post`（**どのフォルダに置いても URL はファイル名だけ**です）。
+3. **フォルダをまたいでも、スラッグ（ファイル名）はサイト内で重複しない**ようにしてください（重複するとビルドエラーになります）。
+4. **並び順は公開日が新しい順**です。公開日は通常フロントマターの `date` ですが、**省略・空・`auto` のときは自動**（Git でそのファイルが初めて追加されたコミット日時 → なければファイルの作成日時／mtime）で決まります。
+   - トップページの **記事一覧カード**＝**全記事**を **新しい順**で表示します。
+5. 画像は **`public/` 以下**に置き、フロントマターでは先頭スラッシュ付きで指定します（例: `/assets/blog/foo/cover.jpg`）。
 
-# Notes
+### 記事として扱われないファイル
 
-`blog-starter` uses [Tailwind CSS](https://tailwindcss.com) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3).
+次の Markdown は **記事として読み込まれません**。
+
+- **`_posts` 直下**に置いた `.md`（記事は **必ずサブフォルダ内** に置いてください）
+- **`_` で始まるファイル名**（例: `_template.md`）
+- **`README.md`**（`_posts/README.md` も除外）
+
+### フロントマター（各 `.md` の先頭 `---` 〜 `---`）
+
+| フィールド | 必須 | 説明 |
+|------------|------|------|
+| `title` | はい | 記事タイトル |
+| `excerpt` | はい | 一覧・カード用の短い説明 |
+| `coverImage` | はい | サムネイル（`public` からのパス） |
+| `date` | いいえ | 省略・`auto` で自動（上記）。並び順・表示に使う **実際の日時はビルド時に解決**されます。特定の日付を固定したいときだけ ISO 8601 を書きます |
+| `ogImage` | はい | `url`（SNS プレビュー用） |
+| `category` | いいえ | 省略時は **未分類**。同じ名前同士がカテゴリページにまとまります |
+| `tags` | いいえ | 文字列の配列、または `"Laravel, Java"` のように区切った1行。各タグは **`/tags/タグ名`** の一覧へリンクされます（`/` を含む文字列は避けてください） |
+| `preview` | いいえ | プレビュー用フラグ（既存の仕組み） |
+
+**日付の表示（フロントマターに書かなくてよいもの）**
+
+- **公開日**: `date` を書いたときはその値。省略・空・`auto` のときは **Git の初回追加コミット日時**（なければファイル日時）が使われます。
+- **更新日**: `npm run build` など **ビルドのとき**に自動で付きます。優先して **Git でその `.md` の最終コミット日時**を使い、Git が使えない場合は **ファイルの最終更新日時（mtime）** です。本文に手で `updated` を書く必要はありません。更新をサイトに反映したいときは、内容を直して **コミットしてからデプロイ／ビルド**すると、本番の「更新日」が追従しやすくなります。
+
+手元の雛形: **`_posts/_template.md`** を複製して編集すると安全です。
+
+### タグ
+
+- トップページの **タグ** 欄・記事カード・記事ページから、各タグの記事一覧（**`/tags/タグ名`**、URL エンコード）へ移動できます。
+- **`/tags` の一覧ページはありません**（タグの並びはトップなどで表示）。
+
+### カテゴリ
+
+- `category: "開発"` のように **任意の文字列**（日本語可）で指定します。
+- **ヘッダー**には、記事で実際に使っているカテゴリ名だけがリンクとして並びます。
+- 各カテゴリの一覧は **`/categories/カテゴリ名`**（URL エンコードされます）で静的生成されます。
+- ヘッダーの **「記事一覧」** は **`/posts`** へ移動し、**全記事**をカード表示します（カテゴリページと同じレイアウト）。
+- トップページ（`/`）では、**自己紹介**のあとに **全記事**をカード表示し（新しい順）、その下に **タグ一覧**（件数付き）を表示します。
+
+### 変更を反映するとき
+
+- **開発中**: ファイル保存後、開発サーバーが内容を読み直します（`npm run dev`）。
+- **本番（Vercel 等）**: Git に push するとビルドが走り、静的ページが更新されます。カテゴリやタグを新設した場合も、**ビルド時**に `/categories/...` や `/tags/...` が増えます。
+
+## 収益化・法務ページ（広告・アフィリエイト等）
+
+Google AdSense やアフィリエイトを検討する際、**プライバシーポリシー・利用規約・広告の明示**などが求められることが多いです。次のページを用意しています。**フッターへのリンク**は現状 JSX コメントで囲んで非表示にしてあります。表示するときは `src/app/_components/footer.tsx` 内の該当ブロックの `{/*` と `*/}` を外してください。URL 直叩きでは各ページは開けます。
+
+| パス | 内容 |
+|------|------|
+| `/privacy` | プライバシーポリシー（個人情報、Cookie、第三者広告・解析の枠組み） |
+| `/terms` | 利用規約 |
+| `/disclosure` | 広告・免責・アフィリエイト（成果報酬リンクの考え方） |
+| `/tokusho` | 特定商取引法に基づく表記（物販・有料サービスを始める場合の表記枠） |
+
+**必ず `src/lib/legal-site.ts` を開き、運営者名・連絡先・住所などを実際の内容に書き換えてください。** 本文は一般的なテンプレートであり、**法的助言ではありません**。事業内容に応じて弁護士等への確認を推奨します。規約を変えたら `LEGAL_LAST_UPDATED` も更新してください。
+
+## 技術メモ
+
+- 記事の読み込み・メタデータ: [`gray-matter`](https://github.com/jonschlinkert/gray-matter)
+- 本文 HTML 化: [`remark`](https://github.com/remarkjs/remark) / [`remark-html`](https://github.com/remarkjs/remark-html)
+- スタイル: [Tailwind CSS](https://tailwindcss.com)
+
+元になった例: [Next.js blog-starter](https://github.com/vercel/next.js/tree/canary/examples/blog-starter)
+
+## デプロイ
+
+[Vercel](https://vercel.com/new) などにリポジトリを接続してデプロイできます。詳細は [Next.js Deployment](https://nextjs.org/docs/app/building-your-application/deploying) を参照してください。

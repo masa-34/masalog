@@ -1,30 +1,69 @@
-import Container from "@/app/_components/container";
-import { EXAMPLE_PATH } from "@/lib/constants";
+import { LEGAL_SITE_NAME } from "@/lib/legal-site";
+import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-50 border-t border-neutral-200 dark:bg-slate-800">
-      <Container>
-        <div className="py-28 flex flex-col lg:flex-row items-center">
-          <h3 className="text-4xl lg:text-[2.5rem] font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">
-            Statically Generated with Next.js.
-          </h3>
-          <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
-            <a
-              href="https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates"
-              className="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
-            >
-              Read Documentation
-            </a>
-            <a
-              href={`https://github.com/vercel/next.js/tree/canary/examples/${EXAMPLE_PATH}`}
-              className="mx-3 font-bold hover:underline"
-            >
-              View on GitHub
-            </a>
-          </div>
+    <footer className="text-gray-600 body-font dark:text-slate-400">
+      <div className="container px-5 py-12 mx-auto">
+        <div className="text-center md:text-left">
+          <Link
+            href="/"
+            className="inline-flex title-font font-medium items-center text-gray-900 dark:text-slate-100"
+          >
+            <img
+              src="/assets/blog/logs.png"
+              alt="masaLogs"
+              className="h-10 w-auto max-w-[200px] object-contain object-left"
+              width={200}
+              height={60}
+            />
+          </Link>
+          <p className="mt-2 text-sm text-gray-500 dark:text-slate-500">
+            システムエンジニアのメモブログ
+          </p>
         </div>
-      </Container>
+      </div>
+      <div className="bg-gray-100 dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
+        {/* 収益化で表示する: 下の div ～ nav ブロックを囲むコメント開始行と終了行を削除 */}
+        {/*
+        <div className="container mx-auto px-5 pt-4 pb-2">
+          <nav
+            className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-gray-600 sm:justify-start dark:text-slate-400"
+            aria-label="法務・ポリシー"
+          >
+            <Link
+              href="/privacy"
+              className="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400"
+            >
+              プライバシーポリシー
+            </Link>
+            <Link
+              href="/terms"
+              className="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400"
+            >
+              利用規約
+            </Link>
+            <Link
+              href="/disclosure"
+              className="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400"
+            >
+              広告・免責・アフィリエイト
+            </Link>
+            <Link
+              href="/tokusho"
+              className="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400"
+            >
+              特定商取引法に基づく表記
+            </Link>
+          </nav>
+        </div>
+        */}
+        <div className="container mx-auto border-t border-gray-200/80 px-5 py-3 dark:border-slate-700/80">
+          <p className="text-center text-sm text-gray-500 dark:text-slate-500 sm:text-left">
+            © {new Date().getFullYear()} {LEGAL_SITE_NAME}
+          </p>
+        </div>
+      </div>
     </footer>
   );
 }
