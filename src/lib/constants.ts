@@ -1,4 +1,4 @@
-export const CMS_NAME = "Markdown";
+export const CMS_NAME = "masaLogs";
 
 /** トップヒロー・ファビコンで共有する画像（`public` 配下のルート相対パス） */
 export const HOME_HERO_IMAGE_PATH = "/assets/blog/icon.png";

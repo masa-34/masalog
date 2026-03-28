@@ -1,5 +1,5 @@
+import { MasaLogsLogo } from "@/app/_components/masa-logs-logo";
 import { LEGAL_SITE_NAME } from "@/lib/legal-site";
-import { withBasePath } from "@/lib/base-path";
 import Link from "next/link";
 
 export function Footer() {
@@ -11,13 +11,7 @@ export function Footer() {
             href="/"
             className="inline-flex title-font font-medium items-center text-gray-900 dark:text-slate-100"
           >
-            <img
-              src={withBasePath("/assets/blog/logs.png")}
-              alt="masaLogs"
-              className="h-10 w-auto max-w-[200px] object-contain object-left"
-              width={200}
-              height={60}
-            />
+            <MasaLogsLogo imgClassName="h-10 w-auto max-w-[200px]" />
           </Link>
           <p className="mt-2 text-sm text-gray-500 dark:text-slate-500">
             システムエンジニアのメモブログ

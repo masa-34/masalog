@@ -1,7 +1,7 @@
 import Container from "@/app/_components/container";
+import { MasaLogsLogo } from "@/app/_components/masa-logs-logo";
 import { ThemeSwitcher } from "@/app/_components/theme-switcher";
 import { getAllCategories } from "@/lib/api";
-import { withBasePath } from "@/lib/base-path";
 import Link from "next/link";
 
 export default async function Header() {
@@ -15,13 +15,7 @@ export default async function Header() {
             href="/"
             className="flex shrink-0 justify-center title-font font-medium text-gray-900 dark:text-slate-100 md:justify-start"
           >
-            <img
-              src={withBasePath("/assets/blog/logs.png")}
-              alt="masaLogs"
-              className="h-10 w-auto max-w-[200px] object-contain object-left md:h-11"
-              width={200}
-              height={60}
-            />
+            <MasaLogsLogo imgClassName="h-10 w-auto max-w-[200px] md:h-11" />
           </Link>
           <nav
             className="flex flex-1 flex-wrap items-center justify-center gap-x-5 gap-y-2 text-base md:justify-start md:border-l md:border-gray-400 md:pl-6 dark:md:border-slate-600"

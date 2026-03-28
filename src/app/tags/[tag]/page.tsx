@@ -48,7 +48,7 @@ export default async function TagPage(props: Props) {
 
 export async function generateStaticParams() {
   return getAllTags().map((tag) => ({
-    tag,
+    tag: encodeURIComponent(tag),
   }));
 }
 

@@ -47,8 +47,10 @@ export default async function CategoryPage(props: Props) {
 }
 
 export async function generateStaticParams() {
+  // Must match encodeURIComponent used in <Link href> — otherwise static export / dev
+  // treats the route as missing from generateStaticParams (non-ASCII segments).
   return getAllCategories().map((category) => ({
-    category,
+    category: encodeURIComponent(category),
   }));
 }
 
