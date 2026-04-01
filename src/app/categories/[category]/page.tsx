@@ -47,10 +47,9 @@ export default async function CategoryPage(props: Props) {
 }
 
 export async function generateStaticParams() {
-  // Must match encodeURIComponent used in <Link href> — otherwise static export / dev
-  // treats the route as missing from generateStaticParams (non-ASCII segments).
+  const isProd = process.env.NODE_ENV === "production";
   return getAllCategories().map((category) => ({
-    category: encodeURIComponent(category),
+    category: isProd ? category : encodeURIComponent(category),
   }));
 }
 

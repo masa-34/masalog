@@ -47,8 +47,9 @@ export default async function TagPage(props: Props) {
 }
 
 export async function generateStaticParams() {
+  const isProd = process.env.NODE_ENV === "production";
   return getAllTags().map((tag) => ({
-    tag: encodeURIComponent(tag),
+    tag: isProd ? tag : encodeURIComponent(tag),
   }));
 }
 

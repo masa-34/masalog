@@ -54,7 +54,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "flex min-h-screen flex-col dark:bg-slate-900 dark:text-slate-400",
+          "flex min-h-screen flex-col overflow-x-hidden dark:bg-slate-900 dark:text-slate-400",
         )}
       >
         <Script
