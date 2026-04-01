@@ -1,5 +1,7 @@
 .markdown {
   @apply text-lg leading-relaxed;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .markdown p,
