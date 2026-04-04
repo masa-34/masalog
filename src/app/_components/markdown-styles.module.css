@@ -54,3 +54,20 @@
 .markdown h3 {
   @apply text-2xl mt-8 mb-4 leading-snug scroll-mt-28;
 }
+
+.markdown table {
+  @apply my-6 w-full border-collapse text-base;
+}
+
+.markdown th,
+.markdown td {
+  @apply border border-gray-300 px-4 py-2 text-left dark:border-slate-600;
+}
+
+.markdown th {
+  @apply bg-gray-100 font-semibold dark:bg-slate-800;
+}
+
+.markdown tr:nth-child(even) td {
+  @apply bg-gray-50 dark:bg-slate-900/50;
+}
