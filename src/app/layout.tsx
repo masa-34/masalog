@@ -64,6 +64,18 @@ export default function RootLayout({
             __html: `(${NoFOUCScript.toString()})(${JSON.stringify(THEME_STORAGE_KEY)})`,
           }}
         />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-M337E1EMWK"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-M337E1EMWK');
+          `}
+        </Script>
         <Header />
         <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         <Footer />
