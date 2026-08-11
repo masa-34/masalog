@@ -38,7 +38,7 @@ export default async function Post(props: Params) {
             タイトル・カバーは従来どおり全幅。本文列だけ左右 1fr の余白に挟み、
             右の余白に目次（記事本文の max-w-2xl 位置は従来と同じ中央寄せ）。
           */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,42rem)_1fr] lg:items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,42rem)_1fr]">
             <div className="hidden min-w-0 lg:block" aria-hidden />
             <div className="min-w-0">
               <PostBody content={content} className="mx-0 max-w-none" />

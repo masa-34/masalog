@@ -21,7 +21,7 @@ export function PostHeader({
   return (
     <>
       <PostTitle>{title}</PostTitle>
-      <div className="mb-8 md:mb-16 sm:mx-0">
+      <div className="mb-8 md:mb-16 mx-auto max-w-sm">
         <CoverImage title={title} src={coverImage} />
       </div>
       <div className="mx-auto mb-6 max-w-2xl">
