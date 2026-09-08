@@ -183,6 +183,62 @@ FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMI
 
 `WHERE`で列の別名（`SELECT`で`AS`をつけた名前）が使えない、`GROUP BY`より前に絞り込みたいときは`WHERE`を使う、といった挙動はこの実行順序に基づいています。
 
+## インデックス：検索を高速化する
+
+インデックスは、特定の列に対して検索用の索引を作っておくことで、`WHERE`や`JOIN`での検索・絞り込みを高速化する仕組みです。本の索引のように、目的のデータを先頭から順に探す（フルスキャン）のではなく、索引を使って一気に該当箇所へたどり着けるようになります。
+
+```sql
+-- usersテーブルのcity列にインデックスを作成
+CREATE INDEX idx_users_city ON users (city);
+
+-- 不要になったインデックスの削除
+DROP INDEX idx_users_city;
+```
+
+インデックスは検索を速くする一方で、以下のようなコストもあります。
+
+- テーブルへの`INSERT`・`UPDATE`・`DELETE`のたびにインデックスも更新されるため、書き込みはやや遅くなる
+- インデックス自体がディスク容量を消費する
+
+そのため、「よく`WHERE`や`JOIN`の条件に使われる列」「値の種類が豊富でカーディナリティが高い列」に絞って設定するのが基本方針です。逆に、値の種類が数種類しかない列（真偽値など）や、めったに検索条件に使わない列にインデックスを張っても、効果が薄いばかりか書き込みコストだけが増えてしまいます。
+
+## EXPLAIN / EXPLAIN ANALYZE：実行計画を確認する
+
+クエリが実際にどのように実行されるか（テーブル全体を走査しているのか、インデックスを使っているのか）を確認したいときに使うのが`EXPLAIN`です。
+
+```sql
+EXPLAIN SELECT * FROM users WHERE city = '東京';
+```
+
+`EXPLAIN`はクエリを実行せずに、DBが立てた実行計画（見積もり）だけを表示します。代表的な出力項目は以下の通りです。
+
+| 項目 | 意味 |
+|------|------|
+| `Seq Scan` | テーブルを先頭から順に全件走査（インデックス未使用） |
+| `Index Scan` | インデックスを使ってデータを取得 |
+| `cost` | 実行コストの見積もり（開始コスト..合計コスト） |
+| `rows` | 見積もられる取得行数 |
+
+`city`列にインデックスがない状態では`Seq Scan`（全件走査）になりますが、前述の`CREATE INDEX idx_users_city ON users (city);`を実行した後に同じクエリを流すと、`Index Scan`に切り替わることが確認できます。
+
+`EXPLAIN ANALYZE`を使うと、見積もりだけでなく実際にクエリを実行した上での本当の所要時間や行数も合わせて確認できます。
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM users WHERE city = '東京';
+```
+
+```text
+Index Scan using idx_users_city on users
+  (cost=0.15..8.17 rows=1 width=64)
+  (actual time=0.020..0.022 rows=1 loops=1)
+Planning Time: 0.080 ms
+Execution Time: 0.045 ms
+```
+
+`cost`や`rows`が見積もり値であるのに対し、`actual time`・`loops`・`Execution Time`は実測値です。見積もりと実測が大きくずれている場合は、テーブルの統計情報が古い（`ANALYZE`コマンドで統計情報を更新する）可能性があるなど、チューニングの手がかりになります。
+
+注意点として、`EXPLAIN ANALYZE`は実際にクエリを実行してしまうため、`INSERT`・`UPDATE`・`DELETE`のような更新系クエリに対して使うとデータが本当に変更されてしまいます。実行計画だけを見たい更新系クエリでは`EXPLAIN`のみを使うか、トランザクション内で実行して最後に`ROLLBACK`するのが安全です。
+
 ## まとめ
 
 - `SELECT`で取得する列、`WHERE`で行の絞り込みを指定する
@@ -190,5 +246,7 @@ FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMI
 - `GROUP BY`と集計関数を組み合わせてグループごとの集計を行い、集計後の絞り込みは`HAVING`を使う
 - 複数テーブルを扱う場合は`JOIN`で結合する。存在しないデータも含めたい場合は`LEFT JOIN`
 - 書く順序と実行順序（`FROM`→`WHERE`→`GROUP BY`→`SELECT`→`ORDER BY`）が異なる点を意識すると理解しやすい
+- 検索・結合でよく使う列には`CREATE INDEX`でインデックスを張ると高速化できるが、書き込みコストとのトレードオフがある
+- `EXPLAIN`で実行計画（見積もり）を、`EXPLAIN ANALYZE`で実測値を確認しながら、インデックスが効いているかをチェックする習慣をつけると良い
 
 まずはこの基本構文の組み合わせを覚えておけば、日常的なクエリの大半はカバーできそうです。
